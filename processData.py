@@ -18,8 +18,7 @@ def drop_columns(job_postings_df):
     job_postings_df = job_postings_df.drop(
         ['compensation_type', 'title', 'description', 'job_posting_url', 'application_url', 'application_type',
          'currency', 'sponsored', 'posting_domain', 'listed_time', 'skills_desc', 'closed_time', 'expiry', 'views',
-         'original_listed_time', 'applies', 'scraped', 'formatted_work_type',
-         'job_id'], axis=1)
+         'original_listed_time', 'applies', 'scraped', 'formatted_work_type'], axis=1)
     return job_postings_df
 
 
@@ -27,8 +26,8 @@ def alter_columns(job_postings_df):
     # print(job_postings_df)
     # print(job_postings_df[job_postings_df['company_id'].isnull()])
 
-    job_postings_df['company_id'] = [0 if pd.isna(x) else int(x) for x in job_postings_df['company_id']]
-    print(job_postings_df[job_postings_df['company_id'].isnull()])
+    # job_postings_df['company_id'] = [0 if pd.isna(x) else int(x) for x in job_postings_df['company_id']]
+    # print(job_postings_df[job_postings_df['company_id'].isnull()])
     job_postings_df = job_postings_df.join(pd.get_dummies(job_postings_df.formatted_experience_level, dtype=int)).drop(
         ['formatted_experience_level'],
         axis=1)
@@ -88,4 +87,14 @@ def drop_pay_columns(job_postings_df):
         ['max_salary', 'med_salary', 'min_salary', 'HOURLY', 'WEEKLY', 'ONCE', 'WEEKLY', 'MONTHLY', 'OTHER', 'CONTRACT',
          'YEARLY',
          'TEMPORARY', 'VOLUNTEER', 'FULL_TIME', 'INTERNSHIP', 'PART_TIME'], axis=1)
+    return job_postings_df
+
+
+def fix_nan(job_postings_df):
+    job_postings_df.fillna(0, inplace=True)
+
+    # print(job_postings_df)
+    # print('check for nan values')
+    # print(job_postings_df[job_postings_df.isnull().any(axis=1)])
+
     return job_postings_df
